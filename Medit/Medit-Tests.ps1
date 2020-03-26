@@ -1,5 +1,5 @@
 describe 'Medit Tests' {
-    it 'has not WSUS' {
+    it 'has no WSUS' {
         (Test-Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate) | should be $false
     }
 }
