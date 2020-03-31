@@ -37,7 +37,7 @@ Param([string]$Path,
                 }
             } catch {}
         } until ($?)
-        DownloadFilesFromRepo -Path $($directories[$Index-1].name)
+        DownloadFilesFromRepo -Path $($directories[$Index-1].name) -Branch $Branch
     }
     Else {
         $objects | where {$_.type -eq "file" -and $_.name.Split(".")[-1] -eq "ps1"} | ForEach-Object {

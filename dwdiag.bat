@@ -8,7 +8,8 @@ IF [%1] == [] (
 	SET branch=%1
 )
 
-IF EXIST "%temp%\diagnostic.ps1" DEL "%temp%\diagnostic.ps1"
-powershell -ExecutionPolicy Unrestricted -Command "(New-Object Net.WebClient).DownloadFile('https://raw.githubusercontent.com/dentalwings/validation/%branch%/diagnostic.ps1', '%temp%\diagnostic.ps1')"
-powershell -ExecutionPolicy Bypass %temp%\diagnostic.ps1 -Branch %branch%
+SET target="%temp%\dwdiag.ps1"
+IF EXIST %target% DEL %target%
+powershell -ExecutionPolicy Unrestricted -Command "(New-Object Net.WebClient).DownloadFile('https://raw.githubusercontent.com/dentalwings/validation/%branch%/dwdiag.ps1', '%target%')"
+powershell -ExecutionPolicy Bypass %target% -Branch %branch%
 pause
