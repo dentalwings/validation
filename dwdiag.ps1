@@ -40,17 +40,18 @@ Param([string]$Path,
         DownloadFilesFromRepo -Path $($directories[$Index-1].name) -Branch $Branch
     }
     Else {
+        New-Item -Path "$Env:TMP" -Name "dwdiag" -ItemType "directory" | Out-Null
         $objects | where {$_.type -eq "file" -and $_.name.Split(".")[-1] -eq "ps1"} | ForEach-Object {
-            $target_file = "$Env:TMP/$($_.name)"
+            $target_file = "$Env:TMP\dwdiag\$($_.name)"
             try {
                 Invoke-WebRequest -Uri $_.download_url -OutFile $target_file -ErrorAction Stop
             }
             catch {
                 throw "Unable to download '$($_.path)'"
             }
-            Invoke-Pester $target_file
-            Remove-Item –Path $target_file
         }
+        Invoke-Pester $Env:TMP\dwdiag
+        Remove-Item –Path $Env:TMP\dwdiag
     }
 }
 
