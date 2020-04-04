@@ -55,8 +55,8 @@ Param([string]$Path,
         $pwd = Get-Location 
         Set-Location -Path $Env:TMP\dwdiag
         Invoke-Pester
-        Remove-Item –Path $Env:TMP\dwdiag -Recurse -Force
         Set-Location -Path $pwd
+        Remove-Item –Path $Env:TMP\dwdiag -Recurse -Force
     }
 }
 
