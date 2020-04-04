@@ -40,7 +40,9 @@ Param([string]$Path,
         DownloadFilesFromRepo -Path $($directories[$Index-1].name) -Branch $Branch
     }
     Else {
-        New-Item -Path "$Env:TMP" -Name "dwdiag" -ItemType "directory" | Out-Null
+        If (-Not (Test-Path -Path "$Env:TMP\dwdiag" )) {
+            New-Item -Path "$Env:TMP" -Name "dwdiag" -ItemType "directory" | Out-Null
+        }
         $objects | where {$_.type -eq "file" -and $_.name.Split(".")[-1] -eq "ps1"} | ForEach-Object {
             $target_file = "$Env:TMP\dwdiag\$($_.name)"
             try {
