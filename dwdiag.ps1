@@ -50,8 +50,9 @@ Param([string]$Path,
                 throw "Unable to download '$($_.path)'"
             }
         }
-        Invoke-Pester $Env:TMP\dwdiag\*
-        Remove-Item –Path $Env:TMP\dwdiag -Recurse
+        Set-Location -Path $Env:TMP\dwdiag
+        Invoke-Pester
+        Remove-Item –Path $Env:TMP\dwdiag -Recurse -Force
     }
 }
 
