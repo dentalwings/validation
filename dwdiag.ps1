@@ -52,9 +52,11 @@ Param([string]$Path,
                 throw "Unable to download '$($_.path)'"
             }
         }
+        $pwd = Get-Location 
         Set-Location -Path $Env:TMP\dwdiag
         Invoke-Pester
         Remove-Item –Path $Env:TMP\dwdiag -Recurse -Force
+        Set-Location -Path $pwd
     }
 }
 
