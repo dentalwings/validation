@@ -1,9 +1,24 @@
 describe 'Chairside Connectivity' {
-    it 'can connect to updates.dwos.com' {
-        # https://github.com/dentalwings/validation/wiki/Chairside-Windows-Configuration
-        $ip = "192.99.147.12" # ip for updates.dwos.com
-        test-netconnection $ip -Port 22 | should be $true # SSH port
-        test-netconnection $ip -Port 80 | should be $true # HTTP port
-        test-netconnection $ip -Port 443 | should be $true # HTTPS port
+    Context 'Connectivity' {
+
+        It 'can connect to ftp.dwos.com on port 21' {
+            (Test-NetConnection -ComputerName ftp.dwos.com -ErrorAction SilentlyContinue -WarningAction SilentlyContinue -Port 21 -InformationLevel Quiet) | Should Be "True"
+        }
+
+        It 'can connect to updates.dwos.com on port 22 (SSH)' {
+            (Test-NetConnection -ComputerName updates.dwos.com -ErrorAction SilentlyContinue -WarningAction SilentlyContinue -Port 22 -InformationLevel Quiet) | Should Be "True"
+        }
+
+        It 'can connect to updates.dwos.com on port 80 (HTTP)' {
+            (Test-NetConnection -ComputerName updates.dwos.com -ErrorAction SilentlyContinue -WarningAction SilentlyContinue -Port 80 -InformationLevel Quiet) | Should Be "True"
+        }
+        
+        It 'can connect to updates.dwos.com on port 443 (HTTPS)' {
+            (Test-NetConnection -ComputerName updates.dwos.com -ErrorAction SilentlyContinue -WarningAction SilentlyContinue -Port 443 -InformationLevel Quiet) | Should Be "True"
+        }
+    
+        It 'can connect to licenses.dwos.com on port 9997' {
+            (Test-NetConnection -ComputerName licenses.dwos.com -ErrorAction SilentlyContinue -WarningAction SilentlyContinue -Port 9997 -InformationLevel Quiet) | Should Be "True"
+        }
     }
 }
