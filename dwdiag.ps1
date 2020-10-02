@@ -10,7 +10,7 @@ Param([string]$Path,
         $baseUri += "?ref=$Branch"
     }
     try {
-        $objects = $(Invoke-WebRequest -Uri $($baseuri)) | ConvertFrom-Json
+        $objects = $(Invoke-WebRequest -UseBasicParsing -Uri $($baseuri)) | ConvertFrom-Json
     }
     catch {
         If ( $Branch ) {
@@ -46,7 +46,7 @@ Param([string]$Path,
         $objects | where {$_.type -eq "file" -and $_.name.Split(".")[-1] -eq "ps1"} | ForEach-Object {
             $target_file = "$Env:TMP\dwdiag\$($_.name)"
             try {
-                Invoke-WebRequest -Uri $_.download_url -OutFile $target_file -ErrorAction Stop
+                Invoke-WebRequest -UseBasicParsing -Uri $_.download_url -OutFile $target_file -ErrorAction Stop
             }
             catch {
                 throw "Unable to download '$($_.path)'"
