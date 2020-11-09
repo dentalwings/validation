@@ -78,5 +78,13 @@ Describe 'Dental Wings 7Series Scanner' {
         }
 
     }
+    
+    Context 'VCredist is present' {
+
+    	It 'VCredist 2019 is present' {
+	   (Get-WmiObject Win32_product -Filter "Name LIKE '%Microsoft Visual C++ 2019 X64%'" | Should Not Be $null)
+	}
+
+    }
 
 }
