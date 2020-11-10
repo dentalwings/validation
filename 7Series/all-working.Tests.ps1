@@ -1,31 +1,38 @@
 
 Describe 'Dental Wings 7Series Scanner' {
-    Context 'Hardware is adequate' {
+    Context 'Hardware ' {
 
         # Check if C: drive has enough free space
-        It "C drive free space greater than 10 GB" {
+        It "has enough space on C:" {
             (Get-WmiObject win32_logicaldisk -Filter "Drivetype=3" | Where-Object { $_.DeviceID -eq "C:" }).FreeSpace / 1GB | Should BeGreaterThan 10
         }
     
         # Check if D: drive has enough free space
-        It "D drive free space greater than 10 GB" {
+        It "has enough space on D:" {
             (Get-WmiObject win32_logicaldisk -Filter "Drivetype=3" | Where-Object { $_.DeviceID -eq "D:" }).FreeSpace / 1GB | Should BeGreaterThan 10
         }
 
         # Check if the RAM size greater than 16GB (some old 7S have 8Go but those are running on Win7, and this pester test can only run on Win10)
-        It "Total RAM Size is greater than 16GB" {
+        It "has enough RAM" {
             [Math]::Round((Get-WmiObject -Class win32_computersystem -ComputerName localhost).TotalPhysicalMemory / 1Gb) | Should BeGreaterThan 8
         }
-	
+
+        It "has all devices properly detected" {
+            @(Get-WmiObject Win32_PNPEntity | Where-Object{$_.ConfigManagerErrorCode -ne 0}).Count | Should be 0
+        }
+
     }
 
-    Context 'Windows configurations are properly applied' {
+    Context 'Windows settings' {
 
         It 'has WSUS' {
             Test-Path 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate' | Should Be $true
+        }
+
+        It 'has DWOS WSUS' {
             (Get-ItemProperty HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate).WUServer | should be "https://wsus.dwos.com:8531"
         }
-	
+
         It 'has the "Balanced" power plan' {
             # This test will fail unless run as admin. should be fine for 7Series as UAC is disabled
             (Get-WmiObject -namespace "root\cimv2\power" -class Win32_powerplan | Where-Object { $_.IsActive }).ElementName  | Should Be "Balanced"
@@ -35,6 +42,10 @@ Describe 'Dental Wings 7Series Scanner' {
             # This test will fail unless run as admin. should be fine for 7Series as UAC is disabled
             [int64]$value = $(powercfg.exe -q SCHEME_BALANCED SUB_PROCESSOR PROCTHROTTLEMIN | Select-String -Pattern "\s*Current AC Power Setting Index: (.*)").Matches.Groups[1].Value
             $value | Should Be "75"
+        }
+	
+        It 'has NVidia drivers' {
+            Get-WmiObject Win32_PnPSignedDriver -Filter "DeviceName LIKE '%NVIDIA GeForce GTX 1050 Ti%'" | Select -ExpandProperty "DriverVersion" | Should be "26.21.14.3200"
         }
 	
     }
@@ -62,16 +73,12 @@ Describe 'Dental Wings 7Series Scanner' {
         }
     }
 
-    Context 'DWOS is properly installed' {
+    Context 'DWOS Software' {
 
         #Checking if the User Access Control is disabled to prevent app starting/blocking issues
         It 'has UAC disabled' {
             (Get-ItemProperty HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System).EnableLUA | should be 0
         }
-
-    }
-
-    Context 'DWOS Easy is properly installed' {
 
         It "MySQL JDBC Port 37132 is OPEN" {
             (Test-NetConnection -ComputerName 127.0.0.1 -ErrorAction SilentlyContinue -WarningAction SilentlyContinue -Port 37132 -InformationLevel Quiet) | Should Be "True"
@@ -79,11 +86,11 @@ Describe 'Dental Wings 7Series Scanner' {
 
     }
     
-    Context 'VCredist is present' {
+    Context 'Runtime dependencies' {
 
-    	It 'VCredist 2019 is present' {
-	   (Get-WmiObject Win32_product -Filter "Name LIKE '%Microsoft Visual C++ 2019 X64%'" | Should Not Be $null)
-	}
+        It 'has VCredist 2019' {
+            (Get-WmiObject Win32_product -Filter "Name LIKE '%Microsoft Visual C++ 2019 X64%'" | Should Not Be $null)
+        }
 
     }
 

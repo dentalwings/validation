@@ -8,10 +8,13 @@ describe 'a Windows system properly configured for Medit' {
         (Test-Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate) | should be $false
     }
 
-    Context 'VCredist is present' {
-	It 'VCredist 2019 is present' {
-	    (Get-WmiObject Win32_product -Filter "Name LIKE '%Microsoft Visual C++ 2019 X64%'" | Should Not Be $null)
+    Context 'Runtime dependencies' {
+        It 'has VCredist 2019' {
+            (Get-WmiObject Win32_product -Filter "Name LIKE '%Microsoft Visual C++ 2019 X64%'" | Should Not Be $null)
+        }
+
+        It 'has Medit Link' {
+            (Test-Path "D:\Medit\CARES Medit Link\") | should be $true
         }
     }
-
 }
