@@ -21,7 +21,7 @@ Describe 'Dental Wings DWOS Software' -Tags "dwos" {
     Where-Object {$_ | Get-ItemProperty -name Path | test-path} | `
     Select-Object -First 1 | Get-ItemProperty -name Path).Path
 
-    It 'is installed' -Tags "dwos" {
+    It 'is installed' {
         $installdir | Should Not BeNullOrEmpty
     }
 
@@ -35,14 +35,14 @@ Describe 'Dental Wings DWOS Software' -Tags "dwos" {
         $scannerType.Conf.ScannerType.Type | should be "DW390PLUS"
     }
 }
-Describe 'Straumann Cares Visual Software' {
+Describe 'Straumann Cares Visual Software' -Tags "cares" {
     # Will run for every hardware if variant is cares
 
     $installdir = (Get-Item -Path HKLM:\SOFTWARE\WOW6432Node\DWOS\Cares\* | `
     Where-Object {$_ | Get-ItemProperty -name Path | test-path} | `
     Select-Object -First 1 | Get-ItemProperty -name Path).Path
 
-    It 'is installed' -Tags "cares" {
+    It 'is installed' {
         $installdir | Should Not BeNullOrEmpty
     }
 
