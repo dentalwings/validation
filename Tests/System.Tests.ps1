@@ -21,35 +21,34 @@ Describe 'Hardware' -Tags "7Series","3Series","Medit" {
 
 }
 
+Describe 'System' -Tags "7Series","3Series","Medit" {
 
-    It 'has no WSUS' -Tags "Medit","chairside" {
+    It 'has WSUS' {
         Test-Path 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate' | Should Be $true
     }
 
-    It 'has WSUS' -Tags "7Series","3Series","Medit" {
-        Test-Path 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate' | Should Be $true
-    }
-
-    It 'has DWOS WSUS' -Tags "7Series","3Series","Medit" {
+    It 'has DWOS WSUS' {
         (Get-ItemProperty HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate).WUServer | should be "https://wsus.dwos.com:8531"
     }
 
-    It 'has the "Balanced" power plan' -Tags "7Series","3Series","Medit" {
+    It 'has the "Balanced" power plan' {
         # This test will fail unless run as admin. should be fine for 7Series as UAC is disabled
         (Get-WmiObject -namespace "root\cimv2\power" -class Win32_powerplan | Where-Object { $_.IsActive }).ElementName  | Should Be "Balanced"
     }
 
-    It 'has minimum processor state set to 75%' -Tags "7Series","3Series","Medit" {
+    It 'has minimum processor state set to 75%' {
         # This test will fail unless run as admin. should be fine for 7Series as UAC is disabled
         [int64]$value = $(powercfg.exe -q SCHEME_BALANCED SUB_PROCESSOR PROCTHROTTLEMIN | Select-String -Pattern "\s*Current AC Power Setting Index: (.*)").Matches.Groups[1].Value
         $value | Should Be "75"
     }
+}
+
+Describe 'Graphic drivers (NVidia)' -Tags "7Series","Medit" {
 
     It 'has NVidia drivers' -Tags "7Series","Medit" {
         Get-WmiObject Win32_PnPSignedDriver -Filter "DeviceName LIKE '%NVIDIA GeForce GTX 1050 Ti%'" | Select -ExpandProperty "DriverVersion" | Should be "26.21.14.3200"
     }
-
-
+}
 
 Describe 'Connectivity' -Tags "7Series","3Series","Medit","chairside" {
 
