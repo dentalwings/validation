@@ -14,7 +14,7 @@ Describe 'CAD Installation' -Tags "dwos","cares" {
     }
 
 }
-Describe 'Dental Wings DWOS Software' {
+Describe 'Dental Wings DWOS Software'  -Tags "dwos" {
     # Will run for every hardware if variant is dwos
 
     $installdir = (Get-Item -Path HKLM:\SOFTWARE\WOW6432Node\DWOS\CAD\* | `
