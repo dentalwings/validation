@@ -45,14 +45,19 @@ Describe 'Straumann Cares Visual Software' -Tags "cares" {
     It 'is installed' {
         $installdir | Should Not BeNullOrEmpty
     }
-
-    It 'has the correct scanner type' -Tags "7Series-cares" {
-        [XML]$scannerType = Get-Content "$installdir\DWData\release\localconf\ScannerType.xml" -ErrorAction Ignore
-        $scannerType.Conf.ScannerType.Type | should be "DW7140"
+    Context "7Series scanner configured" -Tags "7Series-cares" {
+    
+        It 'has the correct scanner type' {
+            [XML]$scannerType = Get-Content "$installdir\DWData\release\localconf\ScannerType.xml" -ErrorAction Ignore
+            $scannerType.Conf.ScannerType.Type | should be "DW7140"
+        }
     }
     
-    It 'has the correct scanner type' -Tags "3Series-cares" {
-        [XML]$scannerType = Get-Content "$installdir\DWData\release\localconf\ScannerType.xml" -ErrorAction Ignore
-        $scannerType.Conf.ScannerType.Type | should be "DW390PLUS"
+    Context "3Series scanner configured" -Tags "3Series-cares" {
+    
+        It 'has the correct scanner type' {
+            [XML]$scannerType = Get-Content "$installdir\DWData\release\localconf\ScannerType.xml" -ErrorAction Ignore
+            $scannerType.Conf.ScannerType.Type | should be "DW390PLUS"
+        }
     }
 }
