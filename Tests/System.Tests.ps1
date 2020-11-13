@@ -21,7 +21,6 @@ Describe 'Hardware' -Tags "7Series","3Series","Medit" {
 
 }
 
-Describe 'Windows settings' {
 
     It 'has no WSUS' -Tags "Medit","chairside" {
         Test-Path 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate' | Should Be $true
@@ -50,7 +49,7 @@ Describe 'Windows settings' {
         Get-WmiObject Win32_PnPSignedDriver -Filter "DeviceName LIKE '%NVIDIA GeForce GTX 1050 Ti%'" | Select -ExpandProperty "DriverVersion" | Should be "26.21.14.3200"
     }
 
-}
+
 
 Describe 'Connectivity' -Tags "7Series","3Series","Medit","chairside" {
 
