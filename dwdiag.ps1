@@ -57,6 +57,5 @@ function Get-Tags($info){
 
 DownloadFilesFromRepo -Branch $Branch
 $tags = Get-Tags 
-
-Invoke-Pester -Tags $tags $Env:TMP\dwdiag
+Invoke-Pester -Tags $tags -Script @{Path = "$Env:TMP\dwdiag"; Parameters = @{Tags = $tags}}
 Remove-Item –Path $Env:TMP\dwdiag -Recurse -Force
