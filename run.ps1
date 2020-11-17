@@ -1,22 +1,23 @@
 Param([bool]$Manual = $false)
 
+function Get-Tags
+{ Param([string]$Systen, [string[]]$Variant)
+	return @($Systen, $Variant, "$Systen-$Variant")
+}
 function Get-TagsFromScannerInfo
-{
-    $info = Get-Content 'C:\DWOS\scannerinfo.ini' | Select-Object -Skip 3 | ConvertFrom-StringData
+{ Param([string]$File)
+
+    $info = Get-Content $File | Select-Object -Skip 3 | ConvertFrom-StringData
     switch ($info.variant) {
         "Dental Wings" { 
-            $scanner = $info.model
-            $variant = "dwos"
-            $scannerVariant = "$scanner-$variant"
+			$tags = Get-Tags $info.model "dwos"
          }
          "Straumann" { 
-             $scanner = $info.model
-             $variant = "cares"
-             $scannerVariant = "$scanner-$variant"
+			$tags = Get-Tags $info.model "cares"
           }
         Default {}
     }
-    return @($scanner, $variant, $scannerVariant)
+    return $tags
 }
 
 function Select-Tag()
@@ -27,11 +28,14 @@ function Select-Tag()
     return $Tags[$prompt]
 }
 
-if($Manual) {
+$scannerinfoPath = "C:\DWOS\scannerinfo.ini"
+if((!$Manual) -and (Test-Path $scannerinfoPath)) {
+    $tags = Get-TagsFromScannerInfo $scannerinfoPath
+}
+if($tags -eq $null) {
     $system = Select-Tag "System" @("7Series", "3Series", "medit", "chairside")
     $variant = Select-Tag "Variant" @("dwos", "cares")
-    $tags = @($system, $variant, "$system-$variant")
-} else {
-    $tags = Get-TagsFromScannerInfo 
+    $tags = Get-Tags $system $variant
 }
+Write-Host "Will run the tests with tags: $tags"
 Invoke-Pester -Tags $tags -Script @{Path = "$PSScriptRoot\Tests"; Parameters = @{Tags = $tags}}
