@@ -21,7 +21,7 @@ Describe 'Hardware' -Tags "7Series","3Series","Medit" {
 
 }
 
-Describe 'System' -Tags "7Series","3Series","Medit" {
+Describe 'System (DW Scanners)' -Tags "7Series","3Series" {
 
     It 'has WSUS' {
         Test-Path 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate' | Should Be $true
@@ -30,6 +30,17 @@ Describe 'System' -Tags "7Series","3Series","Medit" {
     It 'has DWOS WSUS' {
         (Get-ItemProperty HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate).WUServer | should be "https://wsus.dwos.com:8531"
     }
+}
+
+Describe 'System (Medit)' -Tags "Medit" {
+
+    It 'has no WSUS' {
+        Test-Path 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate' | Should Be $false
+    }
+
+}
+
+Describe 'System (Scanners)' -Tags "7Series","3Series","Medit" {
 
     It 'has the "Balanced" power plan' {
         # This test will fail unless run as admin. should be fine for 7Series as UAC is disabled
