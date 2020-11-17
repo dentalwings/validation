@@ -45,7 +45,7 @@ Describe 'System' -Tags "7Series","3Series","Medit" {
 
 Describe 'Graphic drivers (NVidia)' -Tags "7Series","Medit" {
 
-    It 'has NVidia drivers' -Tags "7Series","Medit" {
+    It 'has NVidia drivers' {
         Get-WmiObject Win32_PnPSignedDriver -Filter "DeviceName LIKE '%NVIDIA GeForce GTX 1050 Ti%'" | Select -ExpandProperty "DriverVersion" | Should be "26.21.14.3200"
     }
 }
