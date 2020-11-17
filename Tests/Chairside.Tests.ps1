@@ -1,4 +1,4 @@
-Describe 'Chairside Installation' -Tags "chairside"{
+Describe 'Chairside Installation' -Tags "chairside" {
     It 'has UAC enabled' {
         # https://github.com/dentalwings/validation/wiki/Chairside-Windows-Configuration
         (Get-ItemProperty HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System).EnableLUA | should be 1

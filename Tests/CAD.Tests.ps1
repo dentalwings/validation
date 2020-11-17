@@ -33,7 +33,7 @@ Describe 'System requirements (Medit)' -Tags "Medit" {
     }
 }
 
-Describe 'System requirements' {
+Describe 'System requirements' -Tags "7Series","3Series","Medit" {
 
     It 'has VCredist 2019' {
         (Get-WmiObject Win32_product -Filter "Name LIKE '%Microsoft Visual C++ 2019 X64%'" | Should Not Be $null)
