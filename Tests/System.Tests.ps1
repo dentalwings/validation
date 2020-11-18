@@ -54,7 +54,7 @@ Describe 'System (Scanners)' -Tags "7Series", "3Series", "Medit" {
     }
     
     It 'has disabled Fast Start' {
-        (Get-ItemProperty "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Power").HiberbootEnabled | should be "0"
+        (Get-ItemProperty "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Power").HiberbootEnabled | should be "0" # See https://redmine.dwos.com/issues/49291 for more info
     }
 }
 
