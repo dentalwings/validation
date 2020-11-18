@@ -1,9 +1,9 @@
 Param([bool]$Manual = $false)
 
 function Get-Tags {
-    Param([string]$System, [string]$Variant)
+    Param([string]$System, [string]$Variant, [string]$SpecificIntall)
     
-    return @($System, $Variant, "$System-$Variant")
+    return @($System, $Variant, $SpecificIntall, "$System-$Variant-$SpecificIntall")
 }
 function Get-TagsFromScannerInfo {
     Param([string]$File)
@@ -11,10 +11,10 @@ function Get-TagsFromScannerInfo {
     $info = Get-Content $File | Select-Object -Skip 3 | ConvertFrom-StringData
     switch ($info.variant) {
         "Dental Wings" { 
-            $tags = Get-Tags $info.model "dwos"
+            $tags = Get-Tags $info.model "dwos" "None"
         }
         "Straumann" { 
-            $tags = Get-Tags $info.model "cares"
+            $tags = Get-Tags $info.model "cares" "None"
         }
         Default {}
     }
@@ -36,7 +36,8 @@ if ((!$Manual) -and (Test-Path $scannerinfoPath)) {
 if ($null -eq $tags) {
     $system = Select-Tag "System" @("7Series", "3Series", "medit", "chairside")
     $variant = Select-Tag "Variant" @("dwos", "cares")
-    $tags = Get-Tags $system $variant
+    $synergy = Select-Tag "SpecificIntall" @("Synergy","None")
+    $tags = Get-Tags $system $variant $synergy
 }
 Write-Host "Will run the tests with tags: $tags"
 Invoke-Pester -Tags $tags -Script @{Path = "$PSScriptRoot\Tests"; Parameters = @{Tags = $tags } }
