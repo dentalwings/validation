@@ -52,6 +52,10 @@ Describe 'System (Scanners)' -Tags "7Series", "3Series", "Medit" {
         [int64]$value = $(powercfg.exe -q SCHEME_BALANCED SUB_PROCESSOR PROCTHROTTLEMIN | Select-String -Pattern "\s*Current AC Power Setting Index: (.*)").Matches.Groups[1].Value
         $value | Should Be "75"
     }
+    
+    It 'has disabled Fast Start' {
+        (Get-ItemProperty "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Power").HiberbootEnabled | should be "0"
+    }
 }
 
 Describe 'Graphic drivers (NVidia)' -Tags "7Series", "Medit" {
