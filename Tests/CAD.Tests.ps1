@@ -5,7 +5,7 @@ If ($Tags -Contains "dwos") {
     $registryKey = "HKLM:\SOFTWARE\WOW6432Node\DWOS\CAD\*"
 }
 ElseIf ($Tags -Contains "cares") {
-    $product = "Dental Wings DWOS"
+    $product = "Straumann Cares"
     $registryKey = "HKLM:\SOFTWARE\WOW6432Node\DWOS\Cares\*"
 }
 If ($Tags -Contains "7Series") {
