@@ -1,4 +1,4 @@
-Describe 'Hardware' -Tags "7Series","3Series","Medit" {
+Describe 'Hardware' -Tags "7Series", "3Series", "Medit" {
 
     # Check if C: drive has enough free space
     It "has enough space on C:" {
@@ -16,12 +16,12 @@ Describe 'Hardware' -Tags "7Series","3Series","Medit" {
     }
 
     It "has all devices properly detected" {
-        @(Get-WmiObject Win32_PNPEntity | Where-Object{$_.ConfigManagerErrorCode -ne 0}).Count | Should be 0
+        @(Get-WmiObject Win32_PNPEntity | Where-Object { $_.ConfigManagerErrorCode -ne 0 }).Count | Should be 0
     }
 
 }
 
-Describe 'System (DW Scanners)' -Tags "7Series","3Series" {
+Describe 'System (DW Scanners)' -Tags "7Series", "3Series" {
 
     It 'has WSUS' {
         Test-Path 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate' | Should Be $true
@@ -40,7 +40,7 @@ Describe 'System (Medit)' -Tags "Medit" {
 
 }
 
-Describe 'System (Scanners)' -Tags "7Series","3Series","Medit" {
+Describe 'System (Scanners)' -Tags "7Series", "3Series", "Medit" {
 
     It 'has the "Balanced" power plan' {
         # This test will fail unless run as admin. should be fine for 7Series as UAC is disabled
@@ -54,14 +54,14 @@ Describe 'System (Scanners)' -Tags "7Series","3Series","Medit" {
     }
 }
 
-Describe 'Graphic drivers (NVidia)' -Tags "7Series","Medit" {
+Describe 'Graphic drivers (NVidia)' -Tags "7Series", "Medit" {
 
     It 'has NVidia drivers' {
-        Get-WmiObject Win32_PnPSignedDriver -Filter "DeviceName LIKE '%NVIDIA GeForce GTX 1050 Ti%'" | Select -ExpandProperty "DriverVersion" | Should be "26.21.14.3200"
+        Get-WmiObject Win32_PnPSignedDriver -Filter "DeviceName LIKE '%NVIDIA GeForce GTX 1050 Ti%'" | Select-Object -ExpandProperty "DriverVersion" | Should be "26.21.14.3200"
     }
 }
 
-Describe 'Connectivity' -Tags "7Series","3Series","Medit","chairside" {
+Describe 'Connectivity' -Tags "7Series", "3Series", "Medit", "chairside" {
 
     It 'can connect to ftp.dwos.com on port 21' {
         (Test-NetConnection -ComputerName ftp.dwos.com -ErrorAction SilentlyContinue -WarningAction SilentlyContinue -Port 21 -InformationLevel Quiet) | Should Be "True"

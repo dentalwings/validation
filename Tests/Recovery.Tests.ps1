@@ -1,4 +1,4 @@
-﻿Describe "Recovery tests" -Tags "7Series","3Series","Medit" {
+﻿Describe "Recovery tests" -Tags "7Series", "3Series", "Medit" {
 
   $versions = (wbadmin get versions | select-String -Pattern "Version identifier: ")
 
