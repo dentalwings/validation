@@ -70,7 +70,7 @@ Describe "$product Software" -Tags "dwos", "cares" {
             Where-Object { $_ | Get-ItemProperty -name Path | test-path } | `
             Select-Object -First 1 | Get-ItemProperty -name Path).Path
 
-    It '' {
+    It 'is installed' {
         $installdir | Should Not BeNullOrEmpty
     }
 
