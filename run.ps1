@@ -10,14 +10,11 @@ function Get-TagsFromConfigFiles {
     Param([string]$File, [string]$SynergyPath)
 
     $info = Get-Content $File | Select-Object -Skip 3 | ConvertFrom-StringData
-    
-    
-    
-   if (Test-Path 'C:/ProgramData/coDiagnostiX/DWSynergySrv'){
+  
+    $synergy = "None"
+    if (Test-Path 'C:/ProgramData/coDiagnostiX/DWSynergySrv'){
         $synergy = "Synergy"
-   } else {
-        $synergy = "None"
-   }
+    }
     
     switch ($info.variant) {
         "Dental Wings" { 
@@ -46,7 +43,7 @@ if ((!$Manual) -and (Test-Path $scannerinfoPath)) {
 if ($null -eq $tags) {
     $system = Select-Tag "System" @("7Series", "3Series", "medit", "chairside")
     $variant = Select-Tag "Variant" @("dwos", "cares")
-    $synergy = Select-Tag "SpecificIntall" @("None", "Synergy")
+    $synergy = Select-Tag "Optional Software" @("None", "Synergy")
     $tags = Get-Tags $system $variant $synergy
 }
 Write-Host "Will run the tests with tags: $tags"
