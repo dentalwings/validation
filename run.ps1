@@ -5,10 +5,13 @@ function Get-Tags {
     
     return @($System, $Variant, $SpecificIntall, "$System-$Variant-$SpecificIntall")
 }
-function Get-TagsFromScannerInfo {
+
+function Get-TagsFromConfigFiles {
     Param([string]$File)
 
     $info = Get-Content $File | Select-Object -Skip 3 | ConvertFrom-StringData
+    
+    
     switch ($info.variant) {
         "Dental Wings" { 
             $tags = Get-Tags $info.model "dwos" "None"
@@ -31,7 +34,7 @@ function Select-Tag() {
 
 $scannerinfoPath = "C:\DWOS\scannerinfo.ini"
 if ((!$Manual) -and (Test-Path $scannerinfoPath)) {
-    $tags = Get-TagsFromScannerInfo $scannerinfoPath
+    $tags = Get-TagsFromConfigFiles $scannerinfoPath
 }
 if ($null -eq $tags) {
     $system = Select-Tag "System" @("7Series", "3Series", "medit", "chairside")
