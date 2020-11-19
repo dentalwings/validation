@@ -1,23 +1,30 @@
 Param([bool]$Manual = $false)
 
 function Get-Tags {
-    Param([string]$System, [string]$Variant, [string]$SpecificIntall)
+    Param([string]$System, [string]$Variant, [string]$Synergy)
     
-    return @($System, $Variant, $SpecificIntall, "$System-$Variant-$SpecificIntall")
+    return @($System, $Variant, $Synergy, "$System-$Variant-$Synergy")
 }
 
 function Get-TagsFromConfigFiles {
-    Param([string]$File)
+    Param([string]$File, [string]$SynergyPath)
 
     $info = Get-Content $File | Select-Object -Skip 3 | ConvertFrom-StringData
     
     
+    
+   if (Test-Path 'C:/ProgramData/coDiagnostiX/DWSynergySrv'){
+        $synergy = "Synergy"
+   } else {
+        $synergy = "None"
+   }
+    
     switch ($info.variant) {
         "Dental Wings" { 
-            $tags = Get-Tags $info.model "dwos" "None"
+            $tags = Get-Tags $info.model "dwos" $synergy
         }
         "Straumann" { 
-            $tags = Get-Tags $info.model "cares" "None"
+            $tags = Get-Tags $info.model "cares" $synergy
         }
         Default {}
     }
