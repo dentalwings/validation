@@ -44,23 +44,23 @@ Describe 'System requirements' -Tags "7Series", "3Series", "Medit" {
 
 Describe 'Synergy install' -Tags "Synergy" {
 
-    It 'DWSynergyPorts firewall rull is present' {
+    It 'has DWSynergyPorts firewall rule' {
         (Get-NetFirewallRule -DisplayName "DWSynergyPorts" | Should Not Be $null)
     }
 
-    It 'RabbitMQ_Erl firewall rull is present' {
+    It 'has RabbitMQ_Erl firewall rule' {
         (Get-NetFirewallRule -DisplayName "RabbitMQ_Erl" | Should Not Be $null)
     }
 
-    It 'RabbitMQ_ErlSrv firewall rull is present' {
+    It 'has RabbitMQ_ErlSrv firewall rule' {
         (Get-NetFirewallRule -DisplayName "RabbitMQ_ErlSrv" | Should Not Be $null)
     }
 
-    It 'RabbitMQ_Epmd firewall rull is present' {
+    It 'has RabbitMQ_Epmd firewall rule' {
         (Get-NetFirewallRule -DisplayName "RabbitMQ_Epmd" | Should Not Be $null)
     }
     
-    It 'DWSynergySrv firewall rull is present' {
+    It 'has DWSynergySrv firewall rule' {
         (Get-NetFirewallRule -DisplayName "DWSynergySrv" | Should Not Be $null)
     }
 }
