@@ -42,12 +42,35 @@ Describe 'System requirements' -Tags "7Series", "3Series", "Medit" {
     }
 }
 
+Describe 'Synergy install' -Tags "Synergy" {
+
+    It 'DWSynergyPorts firewall rull is present' {
+        ( Get-NetFirewallProfile -DisplayName "DWSynergyPorts" | Should Not Be $null)
+    }
+
+    It 'RabbitMQ_Erl firewall rull is present' {
+        ( Get-NetFirewallProfile -DisplayName "RabbitMQ_Erl" | Should Not Be $null)
+    }
+
+    It 'RabbitMQ_ErlSrv firewall rull is present' {
+        ( Get-NetFirewallProfile -DisplayName "RabbitMQ_ErlSrv" | Should Not Be $null)
+    }
+
+    It 'RabbitMQ_Epmd firewall rull is present' {
+        ( Get-NetFirewallProfile -DisplayName "RabbitMQ_Epmd" | Should Not Be $null)
+    }
+    
+    It 'DWSynergySrv firewall rull is present' {
+        ( Get-NetFirewallProfile -DisplayName "DWSynergySrv" | Should Not Be $null)
+    }
+}
+
 Describe "$product Software" -Tags "dwos", "cares" {
     $installdir = (Get-Item -Path $registryKey | `
             Where-Object { $_ | Get-ItemProperty -name Path | test-path } | `
             Select-Object -First 1 | Get-ItemProperty -name Path).Path
 
-    It 'is installed' {
+    It '' {
         $installdir | Should Not BeNullOrEmpty
     }
 
