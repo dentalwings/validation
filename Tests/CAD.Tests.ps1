@@ -31,7 +31,7 @@ Describe 'System requirements (Medit)' -Tags "Medit" {
 
     #Checking if the User Access Control is disabled to prevent app starting/blocking issues
     It 'has UAC disabled' {
-        (Get-ItemProperty HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System).EnableLUA | should be 0
+        (Get-ItemProperty HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System).EnableLUA | should be 0 # See https://redmine.dwos.com/issues/48724 for more info
     }
 }
 
@@ -42,7 +42,7 @@ Describe 'System requirements' -Tags "7Series", "3Series", "Medit" {
     }
 }
 
-Describe 'Synergy install' -Tags "Synergy" {
+Describe 'Synergy install' -Tags "Synergy" { #see https://redmine.dwos.com/issues/48981 for more info
 
     It 'has DWSynergyPorts firewall rule' {
         (Get-NetFirewallRule -DisplayName "DWSynergyPorts" | Should Not Be $null)
