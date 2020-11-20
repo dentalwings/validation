@@ -16,13 +16,13 @@ function Get-TagsFromConfigFiles {
             $tags = Get-Tags $info.model "dwos"
         }
         "Straumann" { 
-            $tags = Get-Tags $info.model "cares" $synergy
+            $tags = Get-Tags $info.model "cares"
         }
         Default {}
     }
     if (Test-Path 'C:/ProgramData/coDiagnostiX/DWSynergySrv'){
         $tags += "Synergy"
-    }
+    } else 
     return $tags
 }
 
