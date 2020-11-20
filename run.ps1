@@ -7,23 +7,21 @@ function Get-Tags {
 }
 
 function Get-TagsFromConfigFiles {
-    Param([string]$File, [string]$SynergyPath)
+    Param([string]$File)
 
     $info = Get-Content $File | Select-Object -Skip 3 | ConvertFrom-StringData
-  
-    $synergy = "None"
-    if (Test-Path 'C:/ProgramData/coDiagnostiX/DWSynergySrv'){
-        $synergy = "Synergy"
-    }
-    
+
     switch ($info.variant) {
         "Dental Wings" { 
-            $tags = Get-Tags $info.model "dwos" $synergy
+            $tags = Get-Tags $info.model "dwos"
         }
         "Straumann" { 
             $tags = Get-Tags $info.model "cares" $synergy
         }
         Default {}
+    }
+    if (Test-Path 'C:/ProgramData/coDiagnostiX/DWSynergySrv'){
+        $tags += "Synergy"
     }
     return $tags
 }
