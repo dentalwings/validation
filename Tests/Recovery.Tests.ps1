@@ -8,8 +8,7 @@
 
   It "Does not incude D in the recovery" {
     $versionid = $versions -replace "Version identifier: "
-    wbadmin get items -version:$versionid
-    $Dvolume = (wbadmin get versions | select-String -Pattern "mounted at D:")
+    $Dvolume = (wbadmin get items -version:$versionid | select-String -Pattern "mounted at D:")
     $Dvolume.Count | should be 0
   }
 }
