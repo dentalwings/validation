@@ -58,13 +58,6 @@ Describe 'System (Scanners)' -Tags "7Series", "3Series", "Medit" {
     }
 }
 
-Describe 'Graphic drivers (NVidia)' -Tags "7Series", "Medit" {
-
-    It 'has NVidia drivers' {
-        Get-WmiObject Win32_PnPSignedDriver -Filter "DeviceName LIKE '%NVIDIA GeForce GTX 1050 Ti%'" | Select-Object -ExpandProperty "DriverVersion" | Should be "26.21.14.3200"
-    }
-}
-
 Describe 'Connectivity' -Tags "7Series", "3Series", "Medit", "chairside" {
 
     It 'can connect to ftp.dwos.com on port 21' {
