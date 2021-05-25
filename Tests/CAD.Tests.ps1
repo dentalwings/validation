@@ -43,9 +43,9 @@ Describe 'System requirements' -Tags "7Series", "3Series", "Medit" {
 }
 
 Describe "$product Software" -Tags "dwos", "cares" {
-    $installdir = (Get-Item -Path $registryKey | `
-            Where-Object { $_ | Get-ItemProperty -name Path | test-path } | `
-            Select-Object -First 1 | Get-ItemProperty -name Path).Path
+    # $installdir = (Get-Item -Path $registryKey | `
+    #         Where-Object { $_ | Get-ItemProperty -name Path | test-path } | `
+    #         Select-Object -First 1 | Get-ItemProperty -name Path).Path
 
     It 'is installed' {
         $installdir | Should Not BeNullOrEmpty
@@ -54,5 +54,13 @@ Describe "$product Software" -Tags "dwos", "cares" {
     It 'has the correct scanner type' {
         [XML]$scannerTypeXML = Get-Content "$installdir\DWData\release\localconf\ScannerType.xml" -ErrorAction Ignore
         $scannerTypeXML.Conf.ScannerType.Type | should be $scannerType
+    }
+
+    It 'has coDiagnostiX installed' {
+        Test-Path "HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\{8E844415-B43B-40F7-9625-BDD6A5F640D4}" | Should be $true
+    }
+    
+    It 'has coDiagnostiX available' {
+        Test-Path "C:\Program Files (x86)\coDiagnostiX\coDiagnostiX.App\coDiagStarter.exe" | Should be $true
     }
 }
