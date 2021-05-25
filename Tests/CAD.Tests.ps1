@@ -55,4 +55,12 @@ Describe "$product Software" -Tags "dwos", "cares" {
         [XML]$scannerTypeXML = Get-Content "$installdir\DWData\release\localconf\ScannerType.xml" -ErrorAction Ignore
         $scannerTypeXML.Conf.ScannerType.Type | should be $scannerType
     }
+
+    It 'has coDiagnostiX installed' {
+        Test-Path "HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\{8E844415-B43B-40F7-9625-BDD6A5F640D4}" | Should be $true
+    }
+    
+    It 'has coDiagnostiX available' {
+        Test-Path "C:\Program Files (x86)\coDiagnostiX\coDiagnostiX.App\coDiagStarter.exe" | Should be $true
+    }
 }
