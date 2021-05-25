@@ -43,9 +43,9 @@ Describe 'System requirements' -Tags "7Series", "3Series", "Medit" {
 }
 
 Describe "$product Software" -Tags "dwos", "cares" {
-    # $installdir = (Get-Item -Path $registryKey | `
-    #         Where-Object { $_ | Get-ItemProperty -name Path | test-path } | `
-    #         Select-Object -First 1 | Get-ItemProperty -name Path).Path
+    $installdir = (Get-Item -Path $registryKey | `
+            Where-Object { $_ | Get-ItemProperty -name Path | test-path } | `
+            Select-Object -First 1 | Get-ItemProperty -name Path).Path
 
     It 'is installed' {
         $installdir | Should Not BeNullOrEmpty
