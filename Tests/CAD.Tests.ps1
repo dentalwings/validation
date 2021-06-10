@@ -22,8 +22,8 @@ Describe 'System requirements (DW Scanners)' -Tags "7Series", "3Series" {
         (Get-ItemProperty HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System).EnableLUA | should be 0
     }
 
-    It "MySQL JDBC Port 37132 is OPEN" {
-        (Test-NetConnection -ComputerName 127.0.0.1 -ErrorAction SilentlyContinue -WarningAction SilentlyContinue -Port 37132 -InformationLevel Quiet) | Should Be "True"
+    It "MySQL JDBC Port 33712 is OPEN" {
+        (Test-NetConnection -ComputerName 127.0.0.1 -ErrorAction SilentlyContinue -WarningAction SilentlyContinue -Port 33712 -InformationLevel Quiet) | Should Be "True"
     }
 }
 
