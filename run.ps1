@@ -1,24 +1,23 @@
 Param([bool]$Manual = $false)
 
-function Get-Tags {
-    Param([string]$System, [string]$Variant)
-    
-    return @($System, $Variant, "$System-$Variant")
-}
-function Get-TagsFromScannerInfo {
+function Get-TagsFromConfigFiles {
     Param([string]$File)
 
     $info = Get-Content $File | Select-Object -Skip 3 | ConvertFrom-StringData
-    switch ($info.variant) {
+    Switch ($info.variant) {
         "Dental Wings" { 
-            $tags = Get-Tags $info.model "dwos"
+            $tags = @($info.model, "dwos")
         }
         "Straumann" { 
-            $tags = Get-Tags $info.model "cares"
+            $tags = @($info.model, "cares")
         }
         Default {}
     }
-    return $tags
+
+    If (Test-Path 'C:/ProgramData/coDiagnostiX/DWSynergySrv'){
+        $tags += "Synergy"
+    }
+    $tags
 }
 
 function Select-Tag() {
@@ -31,12 +30,16 @@ function Select-Tag() {
 
 $scannerinfoPath = "C:\DWOS\scannerinfo.ini"
 if ((!$Manual) -and (Test-Path $scannerinfoPath)) {
-    $tags = Get-TagsFromScannerInfo $scannerinfoPath
+    $tags = Get-TagsFromConfigFiles $scannerinfoPath
 }
 if ($null -eq $tags) {
     $system = Select-Tag "System" @("7Series", "3Series", "medit", "chairside")
     $variant = Select-Tag "Variant" @("dwos", "cares")
-    $tags = Get-Tags $system $variant
+    $tags = @($system, $variant)
+    $synergy = Select-Tag "Optional Software" @("None", "Synergy")
+    If ($synergy -ne "None") {
+        $tags += $synergy
+    }
 }
 Write-Host "Will run the tests with tags: $tags"
 Invoke-Pester -Tags $tags -Script @{Path = "$PSScriptRoot\Tests"; Parameters = @{Tags = $tags } }
